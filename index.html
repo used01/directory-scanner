@@ -165,6 +165,55 @@
             color: #333;
         }
 
+        .console-panel {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 2px solid #333;
+        }
+
+        .console-line {
+            margin: 3px 0;
+            padding: 2px 5px;
+        }
+
+        .console-info {
+            color: #4ec9b0;
+        }
+
+        .console-success {
+            color: #6a9955;
+        }
+
+        .console-error {
+            color: #f48771;
+        }
+
+        .console-warning {
+            color: #dcdcaa;
+        }
+
+        .console-clear {
+            background: #333;
+            color: #d4d4d4;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+
+        .console-clear:hover {
+            background: #444;
+        }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -369,26 +418,26 @@
                         <label for="wordlistSelect">📋 Wordlist Pré-configurada</label>
                         <select id="wordlistSelect">
                             <option value="custom">Customizada</option>
-                            <option value="common">Common (100 entradas)</option>
-                            <option value="medium">Medium (500 entradas)</option>
-                            <option value="large">Large (2000 entradas)</option>
+                            <option value="common">Common (40 entradas)</option>
+                            <option value="wordpress">WordPress</option>
+                            <option value="default">Default</option>
+                            <option value="api">API</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="threadCount">⚡ Threads Simultâneas</label>
                         <select id="threadCount">
-                            <option value="5">5 threads</option>
-                            <option value="10" selected>10 threads</option>
-                            <option value="20">20 threads</option>
-                            <option value="30">30 threads</option>
+                            <option value="3">3 threads</option>
+                            <option value="5" selected>5 threads</option>
+                            <option value="10">10 threads</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="customWordlist">📝 Wordlist Customizada (uma por linha)</label>
-                    <textarea id="customWordlist" placeholder="admin&#10;backup&#10;config&#10;data&#10;database&#10;upload&#10;api&#10;assets&#10;css&#10;js&#10;images"></textarea>
+                    <textarea id="customWordlist" placeholder="admin&#10;backup&#10;api&#10;config&#10;upload"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -404,14 +453,8 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>
-                            <input type="checkbox" id="followRedirects" checked>
-                            Seguir Redirecionamentos (301/302)
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <label>
                             <input type="checkbox" id="showAll">
-                            Mostrar Todas as Respostas (inclusive 404)
+                            Mostrar Todas as Respostas
                         </label>
                     </div>
                 </div>
@@ -429,6 +472,13 @@
                 <button class="export-btn" onclick="exportResults()">💾 Exportar CSV</button>
             </div>
 
+            <!-- Console Visual -->
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: #333; margin-bottom: 10px;">📝 Console</h3>
+                <div class="console-panel" id="consolePanel"></div>
+                <button class="console-clear" onclick="clearConsole()">Limpar Console</button>
+            </div>
+
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
@@ -441,11 +491,7 @@
                     <option value="">Todos os Status</option>
                     <option value="200">200 OK</option>
                     <option value="301">301 Redirect</option>
-                    <option value="302">302 Redirect</option>
-                    <option value="304">304 Not Modified</option>
-                    <option value="403">403 Forbidden</option>
                     <option value="404">404 Not Found</option>
-                    <option value="500">500 Error</option>
                 </select>
             </div>
 
@@ -457,10 +503,9 @@
             <table class="results-table">
                 <thead>
                     <tr>
-                        <th style="width: 40%;">Caminho</th>
-                        <th style="width: 15%;">Status</th>
-                        <th style="width: 25%;">Tamanho</th>
-                        <th style="width: 20%;">Tempo (ms)</th>
+                        <th style="width: 50%;">Caminho</th>
+                        <th style="width: 20%;">Status</th>
+                        <th style="width: 30%;">Tempo (ms)</th>
                     </tr>
                 </thead>
                 <tbody id="resultsBody">
